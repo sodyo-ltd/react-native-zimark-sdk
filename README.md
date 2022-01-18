@@ -1,13 +1,8 @@
 
-# React Native Sodyo SDK Plugin that wraps Sodyo sdk for Android and iOS
-
-[SodyoSDK for iOS](https://github.com/sodyo-ltd/SodyoSDKPod) v3.54.28
-
-[SodyoSDK for Android](https://search.maven.org/search?q=a:sodyo-android-sdk) v3.54.35
-
+# React Native Zimark SDK Plugin that wraps Zimark sdk for Android and iOS
 
 ## Install
-    npm i @sodyo/react-native-sodyo-sdk -E
+    npm i @sodyo/react-native-zimark-sdk -E
 
 If you using version of react-native < 60 then you have to make a link
 
@@ -16,18 +11,18 @@ If you using version of react-native < 60 then you have to make a link
 [Requires multidex support for android](https://medium.com/@aungmt/multidex-on-androidx-for-rn-0-60-x-cbb37c50d85)
 
 ## Quick start
-Init the plugin with your Sodyo App Key project token with
 ```
-import SodyoSdk from '@sodyo/react-native-sodyo-sdk'
+import ZimarkSdk from '@sodyo/react-native-zimark-sdk'
 
-SodyoSDK.init(your-app-key,
+SodyoSDK.init(
     function(){ /* successful init callback */ },
-    function(){ /* fail init callback */})
+    function(){ /* fail init callback */}
+)
 ```
 
-Use scanner as fragment (only after initialize SodyoSDK)
+Use scanner as fragment (only after initialize ZimarkSDK)
 ```
-import { Scanner } from '@sodyo/react-native-sodyo-sdk'
+import { Scanner } from '@sodyo/react-native-zimark-sdk'
 ...
 <Scanner isEnabled={true}>
     <Text>Children on top of the scanner</Text>
@@ -35,66 +30,34 @@ import { Scanner } from '@sodyo/react-native-sodyo-sdk'
 ```
 `isEnabled toggles the Scanners active / pause status.`
 
-Set the Sodyo error listener
+Set the Zimark error listener
 ```
-SodyoSDK.onError(
+ZimarkSdk.onError(
     function(err){ /* fail callback */ }
 )
 ```
 `For unsubscribing just call the returned function`
 
-Open the Sodyo scanner
-```
-SodyoSDK.start(
-    function(markerData){ /* data content callback */ },
-    function(err){ /* fail */}
-)
-```
-
-Close Sodyo scanner (if scanner run by SodyoSDK.start())
-```
-SodyoSDK.close()
-```
-
-Marker content listener
-```
-SodyoSDK.onMarkerContent(
-    function(markerId, markerData){ /* successfully scanned marker */ },
-)
-```
-`For unsubscribing just call the returned function`
-
-Load marker by Id
-```
-SodyoSDK.performMarker(markerId)
-```
-
 Personal User Information (some object)
 
 ```
-SodyoSDK.setUserInfo(userInfo)
-```
-
-
-User Identification (ID)
-```
-SodyoSDK.setAppUserId(userId)
+ZimarkSdk.setUserInfo(userInfo)
 ```
 
 Setting Scanner Preferences (some flat object)
 ```
-SodyoSDK.setScannerParams(scannerPreferences)
+ZimarkSdk.setScannerParams(scannerPreferences)
 ```
 
 Personalized Content
 ```
-SodyoSDK.setCustomAdLabel(label)
+ZimarkSdk.setCustomAdLabel(label)
 ```
 `The label may include one or more tags in comma-separated values (CSV) format as follows: “label1,label2,label3”`
 
 Remove all listeners
 ```
-SodyoSDK.removeAllListeners()
+ZimarkSdk.removeAllListeners()
 ```
 
 If you get an error similar to this when building Android:
@@ -126,6 +89,3 @@ android {
     }
 }
 ```
-
-
-For more examples see [the sample app](https://github.com/sodyo-ltd/react-native-sample-app)
