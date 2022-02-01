@@ -1,6 +1,6 @@
 {
   "name": "@sodyo/react-native-zimark-sdk",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "RNZimarkSdk",
   "main": "zimarksdk.js",
   "typings": "./zimarksdk.d.ts",

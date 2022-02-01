@@ -17,13 +17,15 @@ declare const _default: {
   setScanModes (modes: EResultScanType[]): void
   removeAllListeners (eventType?: string): void
   onResult (callback: (data: IResult[]) => void): () => void,
+  onFrameData (value: string): () => void,
+  saveNextFrameCapture: () => void,
 }
 
-interface IScannerProps {
+export interface IScannerProps {
   isEnabled?: boolean
 }
 
-interface IResult {
+export interface IResult {
   height: number
   result: string
   scanType: EResultScanType

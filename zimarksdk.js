@@ -66,6 +66,21 @@ export default {
     };
   },
 
+  onFrameData: (callback) => {
+    eventEmitter.removeAllListeners('OnFrameData');
+
+    const subscription = eventEmitter.addListener('OnFrameData', (e) => {
+      if (typeof callback === 'function') {
+        const data = (e && e.data) || ''
+        callback(data);
+      }
+    });
+
+    return () => {
+      return subscription.remove();
+    };
+  },
+
   onCloseContent: (callback) => {
     if (Platform.OS !== 'ios') {
       return () => undefined;
@@ -109,6 +124,10 @@ export default {
 
   setUserInfo: (userInfo) => {
     return RNSodyoSdk.setUserInfo(userInfo);
+  },
+
+  saveNextFrameCapture: () => {
+    return RNSodyoSdk.saveNextFrameCapture();
   },
 
   setScannerParams: (scannerPreferences) => {

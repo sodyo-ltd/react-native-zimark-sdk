@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import android.util.Base64;
 import android.util.Log;
 import android.content.Intent;
 import android.app.Application;
@@ -35,6 +36,8 @@ import com.sodyo.sdk.Sodyo;
 import com.sodyo.sdk.SodyoInitCallback;
 import com.sodyo.sdk.SodyoScannerActivity;
 import com.sodyo.sdk.SodyoScannerCallback;
+import com.sodyo.sdk.SodyoFrameCaptureCallback;
+
 import com.sodyo.sdk.ScanResultData;
 
 import com.sodyo.sdk.ScanType;
@@ -75,7 +78,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
     return "RNSodyoSdk";
   }
 
-  private class SodyoCallback implements SodyoScannerCallback, SodyoInitCallback {
+  private class SodyoCallback implements SodyoScannerCallback, SodyoInitCallback, SodyoFrameCaptureCallback {
 
       private Callback successCallback;
       private Callback errorCallback;
@@ -102,6 +105,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
 
           SodyoCallback callbackClosure = new SodyoCallback(null, null);
           Sodyo.getInstance().setScannerCallback(callbackClosure);
+          Sodyo.getInstance().setFrameCaptureCallback(callbackClosure);
       }
 
       /**
@@ -151,6 +155,16 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
 
            sendEvent("EventContent", params);
          }
+      }
+
+      @Override
+      public void onFrameData(byte[] data) {
+         Log.i(TAG, "onFrameData()" + data);
+         WritableMap params = Arguments.createMap();
+         String encoded = "data:image/png;base64," + Base64.encodeToString(data, Base64.DEFAULT);
+         params.putString("data", encoded);
+
+         sendEvent("OnFrameData", params);
       }
   }
 
@@ -203,6 +217,12 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void saveNextFrameCapture() {
+    Log.i(TAG, "saveNextFrameCapture()");
+    Sodyo.getInstance().saveNextFrameCapture();
+  }
+
+  @ReactMethod
   public void setCustomAdLabel(String label) {
       Log.i(TAG, "setCustomAdLabel()");
       Sodyo.setCustomAdLabel(label);
@@ -246,5 +266,5 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
       this.reactContext
           .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
           .emit(eventName, params);
-    }
+   }
 }
