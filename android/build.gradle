@@ -55,7 +55,7 @@ repositories {
 
 dependencies {
     implementation ('com.facebook.react:react-native:+')
-    implementation (group: 'com.sodyo', name: 'zimark-sdk', version: '1.0.9', ext: 'aar') {
+    implementation (group: 'com.sodyo', name: 'zimark-sdk', version: '1.0.10', ext: 'aar') {
       transitive=true
     }
 }
