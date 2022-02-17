@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.Arguments;
@@ -160,11 +161,9 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
       @Override
       public void onFrameData(byte[] data) {
          Log.i(TAG, "onFrameData()" + data);
-         WritableMap params = Arguments.createMap();
-         String encoded = "data:image/png;base64," + Base64.encodeToString(data, Base64.DEFAULT);
-         params.putString("data", encoded);
+         WritableArray arr = ConversionUtil.bytesToWritableArray(data);
 
-         sendEvent("OnFrameData", params);
+         sendArrayEvent("OnFrameData", arr);
       }
   }
 
@@ -263,6 +262,12 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   }
 
    private void sendEvent(String eventName, @Nullable WritableMap params) {
+      this.reactContext
+          .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+          .emit(eventName, params);
+   }
+
+   private void sendArrayEvent(String eventName, @Nullable WritableArray params) {
       this.reactContext
           .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
           .emit(eventName, params);

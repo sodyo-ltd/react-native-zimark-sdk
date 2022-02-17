@@ -17,7 +17,7 @@ declare const _default: {
   setScanModes (modes: EResultScanType[]): void
   removeAllListeners (eventType?: string): void
   onResult (callback: (data: IResult[]) => void): () => void,
-  onFrameData (callback: (value: string) => void): () => void,
+  onFrameData (callback: (value: number[]) => void): () => void,
   saveNextFrameCapture: () => void,
 }
 

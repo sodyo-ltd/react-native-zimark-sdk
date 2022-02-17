@@ -10,6 +10,8 @@ package com.sodyo.RNSodyoSDK;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.Arguments;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,6 +120,19 @@ public final class ConversionUtil {
         }
 
         return result;
+    }
+
+    /**
+      * bytesToWritableArray converts a {@link byte[]} into an WritableArray.
+      *
+      * @param byte[] The byte[] to be converted.
+      * @return An WritableArray containing the data that was in the byte[].
+    */
+    public static WritableArray bytesToWritableArray(byte[] bytes) {
+      WritableArray value = Arguments.createArray();
+      for (int i = 0; i < bytes.length; i++)
+        value.pushInt(bytes[i]);
+        return value;
     }
 
     /**

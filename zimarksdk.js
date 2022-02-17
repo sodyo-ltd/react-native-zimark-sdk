@@ -71,8 +71,7 @@ export default {
 
     const subscription = eventEmitter.addListener('OnFrameData', (e) => {
       if (typeof callback === 'function') {
-        const data = (e && e.data) || ''
-        callback(data);
+        callback(e);
       }
     });
 
