@@ -1,4 +1,4 @@
-package com.sodyo.RNSodyoSDK;
+package com.sodyo.RNSodyoSdk;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -45,6 +45,8 @@ import com.sodyo.sdk.ScanType;
 import static com.sodyo.sdk.ScanType.BARCODE;
 import static com.sodyo.sdk.ScanType.QR_CODE;
 import static com.sodyo.sdk.ScanType.SODYO_MARKER;
+import com.sodyo.app_sdk.data.SettingsHelper;
+import com.sodyo.sdk.CameraAFMode;
 
 import com.google.gson.Gson;
 
@@ -161,9 +163,11 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
       @Override
       public void onFrameData(byte[] data) {
          Log.i(TAG, "onFrameData()" + data);
-         WritableArray arr = ConversionUtil.bytesToWritableArray(data);
+         WritableMap params = Arguments.createMap();
+         String encoded = "data:image/png;base64," + Base64.encodeToString(data, Base64.DEFAULT);
+         params.putString("data", encoded);
 
-         sendArrayEvent("OnFrameData", arr);
+         sendEvent("OnFrameData", params);
       }
   }
 
@@ -185,6 +189,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
                       (Application) reactContext.getApplicationContext(),
                       callbackClosure
               );
+              SettingsHelper.getInstance().setAFMode(CameraAFMode.AUTO);
           }
       });
   }
@@ -218,7 +223,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void saveNextFrameCapture() {
     Log.i(TAG, "saveNextFrameCapture()");
-    Sodyo.getInstance().saveNextFrameCapture();
+    Sodyo.getInstance().saveNextFrameCapture(true);
   }
 
   @ReactMethod

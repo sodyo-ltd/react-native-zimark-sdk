@@ -71,7 +71,8 @@ export default {
 
     const subscription = eventEmitter.addListener('OnFrameData', (e) => {
       if (typeof callback === 'function') {
-        callback(e);
+        const data = (e && e.data) || ''
+        callback(data);
       }
     });
 
@@ -155,18 +156,11 @@ export default {
 };
 
 export class Scanner extends Component {
-  static defaultProps = {
-    isEnabled: true,
-  };
-
   render () {
-    const { isEnabled, children } = this.props;
+    const { children } = this.props;
     return (
       <Fragment>
-        <RNSodyoSdkView
-          isEnabled={isEnabled}
-          style={{ height: '100%', width: '100%' }}
-        />
+        <RNSodyoSdkView style={{ height: '100%', width: '100%' }}/>
 
         <View style={styles.container} pointerEvents="box-none">
           {children}

@@ -1,5 +1,5 @@
 
-package com.sodyo.RNSodyoSDK;
+package com.sodyo.RNSodyoSdk;
 
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -13,7 +13,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import javax.annotation.Nullable;
 
-import com.sodyo.sdk.SodyoScannerFragment;
+import com.sodyo.sdk.SodyoOpenCvScannerFragment;
 
 public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
     static final String TAG = "RNSodyoSdkView";
@@ -24,7 +24,7 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
 
     private final @Nullable ReactApplicationContext mCallerContext;
 
-    private @Nullable SodyoScannerFragment sodyoFragment;
+    private @Nullable SodyoOpenCvScannerFragment sodyoFragment;
 
     private boolean isCameraEnabled = true;
 
@@ -39,13 +39,13 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
 
     @Override
     public FrameLayout createViewInstance(ThemedReactContext context) {
-        Log.i(TAG,"createViewInstance");
+        Log.i(TAG, "createViewInstance");
 
         final FrameLayout view = new FrameLayout(context);
 
         if (sodyoFragment == null) {
-          Log.i(TAG,"init SodyoScannerFragment");
-          sodyoFragment = new SodyoScannerFragment();
+            Log.i(TAG, "init SodyoOpenCvScannerFragment");
+            sodyoFragment = new SodyoOpenCvScannerFragment();
         }
 
         FragmentManager fragmentManager = mCallerContext.getCurrentActivity().getFragmentManager();
@@ -63,7 +63,8 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
     public void onDropViewInstance(FrameLayout view) {
         super.onDropViewInstance(view);
 
-        Log.i(TAG,"onDropViewInstance");
+        Log.i(TAG, "onDropViewInstance");
+
 
         sodyoFragment = null;
         isCameraEnabled = true;
@@ -78,24 +79,5 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
         } catch (Exception e) {
           e.printStackTrace();
         }
-    }
-
-    @ReactProp(name = "isEnabled", defaultBoolean=true)
-    public void setIsEnabled(FrameLayout view, boolean isEnabled) {
-      if (sodyoFragment == null) {
-        return;
-      }
-
-      if (isEnabled && !isCameraEnabled) {
-        Log.i(TAG,"start camera");
-        isCameraEnabled = true;
-        sodyoFragment.startCamera();
-      }
-
-      if (!isEnabled && isCameraEnabled) {
-        Log.i(TAG,"stop camera");
-        isCameraEnabled = false;
-        sodyoFragment.stopCamera();
-      }
     }
 }

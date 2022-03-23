@@ -24,7 +24,7 @@ Use scanner as fragment (only after initialize ZimarkSDK)
 ```
 import { Scanner } from '@sodyo/react-native-zimark-sdk'
 ...
-<Scanner isEnabled={true}>
+<Scanner>
     <Text>Children on top of the scanner</Text>
 </Scanner>
 ```

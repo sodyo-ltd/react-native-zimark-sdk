@@ -1,5 +1,5 @@
 
-package com.sodyo.RNSodyoSDK;
+package com.sodyo.RNSodyoSdk;
 
 import java.util.Arrays;
 import java.util.Collections;
