@@ -17,7 +17,7 @@ declare const _default: {
   setScanModes (modes: EResultScanType[]): void
   removeAllListeners (eventType?: string): void
   onResult (callback: (data: IResult[]) => void): () => void,
-  onFrameData (callback: (value: number[]) => void): () => void,
+  onFrameData (callback: (value: string) => void): () => void,
   saveNextFrameCapture: () => void,
 }
 
@@ -29,6 +29,12 @@ export interface IResult {
   height: number
   result: string
   scanType: EResultScanType
+  screenAdjustedCoordinates: {
+    bottom: number
+    left: number
+    right: number
+    top: number
+  }
   width: number
   x: number
   y: number
