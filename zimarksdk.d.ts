@@ -22,7 +22,6 @@ declare const _default: {
 }
 
 export interface IScannerProps {
-  isEnabled?: boolean
 }
 
 export interface IResult {

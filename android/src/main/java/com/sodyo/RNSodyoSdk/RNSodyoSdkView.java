@@ -1,5 +1,5 @@
 
-package com.sodyo.RNSodyoSDK;
+package com.sodyo.RNSodyoSdk;
 
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -65,6 +65,7 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
 
         Log.i(TAG, "onDropViewInstance");
 
+
         sodyoFragment = null;
         isCameraEnabled = true;
 
@@ -78,10 +79,5 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
         } catch (Exception e) {
           e.printStackTrace();
         }
-    }
-
-    // TODO: remove method
-    @ReactProp(name = "isEnabled", defaultBoolean = true)
-    public void setIsEnabled(FrameLayout view, boolean isEnabled) {
     }
 }

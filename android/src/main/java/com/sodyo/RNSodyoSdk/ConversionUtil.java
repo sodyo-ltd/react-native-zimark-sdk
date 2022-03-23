@@ -5,7 +5,7 @@
  * Created by Andy Prock on 9/24/15.
  */
 
-package com.sodyo.RNSodyoSDK;
+package com.sodyo.RNSodyoSdk;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
