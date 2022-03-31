@@ -189,7 +189,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
                       (Application) reactContext.getApplicationContext(),
                       callbackClosure
               );
-              SettingsHelper.getInstance().setAFMode(CameraAFMode.AUTO);
+              SettingsHelper.getInstance().setAFMode(CameraAFMode.CONTINUOUS_PICTURE);
           }
       });
   }
