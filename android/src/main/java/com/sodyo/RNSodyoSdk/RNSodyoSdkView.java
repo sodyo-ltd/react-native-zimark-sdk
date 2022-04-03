@@ -24,10 +24,6 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
 
     private final @Nullable ReactApplicationContext mCallerContext;
 
-    private @Nullable SodyoOpenCvScannerFragment sodyoFragment;
-
-    private boolean isCameraEnabled = true;
-
     @Override
     public String getName() {
         return REACT_CLASS;
@@ -42,16 +38,19 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
         Log.i(TAG, "createViewInstance");
 
         final FrameLayout view = new FrameLayout(context);
-
-        if (sodyoFragment == null) {
-            Log.i(TAG, "init SodyoOpenCvScannerFragment");
-            sodyoFragment = new SodyoOpenCvScannerFragment();
-        }
+        SodyoOpenCvScannerFragment sodyoFragment = new SodyoOpenCvScannerFragment();
 
         FragmentManager fragmentManager = mCallerContext.getCurrentActivity().getFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(TAG_FRAGMENT);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        fragmentTransaction.add(sodyoFragment, TAG_FRAGMENT).commit();
+
+        if (fragment != null) {
+            fragmentTransaction.remove(fragment);
+        }
+
+        fragmentTransaction.add(sodyoFragment, TAG_FRAGMENT);
+        fragmentTransaction.commit();
 
         fragmentManager.executePendingTransactions();
 
@@ -65,10 +64,6 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
 
         Log.i(TAG, "onDropViewInstance");
 
-
-        sodyoFragment = null;
-        isCameraEnabled = true;
-
         try {
           FragmentManager fragmentManager = mCallerContext.getCurrentActivity().getFragmentManager();
           Fragment fragment = fragmentManager.findFragmentByTag(TAG_FRAGMENT);
@@ -76,8 +71,9 @@ public class RNSodyoSdkView extends SimpleViewManager<FrameLayout> {
           if (fragment != null) {
               fragmentManager.beginTransaction().remove(fragment).commit();
           }
+
         } catch (Exception e) {
-          e.printStackTrace();
+            e.printStackTrace();
         }
     }
 }
