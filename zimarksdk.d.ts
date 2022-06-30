@@ -17,8 +17,10 @@ declare const _default: {
   setScanModes (modes: EResultScanType[]): void
   removeAllListeners (eventType?: string): void
   onResult (callback: (data: IResult[]) => void): () => void,
+  onColorCalibrationResult (callback: (data: ICalibrationResult) => void): () => void,
   onFrameData (callback: (value: string) => void): () => void,
   saveNextFrameCapture: () => void,
+  calibrateColors: (controlMarkerCode: string, printedMarkerCode: string) => void,
 }
 
 export interface IScannerProps {
@@ -38,6 +40,13 @@ export interface IResult {
   x: number
   y: number
 }
+
+export interface ICalibrationResult {
+  colorTable: number[][]
+  controlMarker: string
+  printerMarker: string
+}
+
 
 export declare class Scanner extends React.PureComponent<IScannerProps> {
 }

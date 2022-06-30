@@ -81,6 +81,23 @@ export default {
     };
   },
 
+  onColorCalibrationResult: (callback) => {
+    eventEmitter.removeAllListeners('OnColorCalibrationResult');
+
+    const subscription = eventEmitter.addListener('OnColorCalibrationResult', (e) => {
+      if (typeof callback === 'function') {
+        const data = typeof e === 'string'
+          ? JSON.parse(e)
+          : e || null;
+        callback(data);
+      }
+    });
+
+    return () => {
+      return subscription.remove();
+    };
+  },
+
   onCloseContent: (callback) => {
     if (Platform.OS !== 'ios') {
       return () => undefined;
@@ -128,6 +145,10 @@ export default {
 
   saveNextFrameCapture: () => {
     return RNSodyoSdk.saveNextFrameCapture();
+  },
+
+  calibrateColors: (controlMarkerCode, printedMarkerCode) => {
+    return RNSodyoSdk.calibrateColors(controlMarkerCode, printedMarkerCode);
   },
 
   setScannerParams: (scannerPreferences) => {

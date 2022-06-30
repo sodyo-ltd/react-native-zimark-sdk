@@ -41,6 +41,9 @@ import com.sodyo.sdk.SodyoFrameCaptureCallback;
 
 import com.sodyo.sdk.ScanResultData;
 
+import com.sodyo.sdk.ColorCalibrationData;
+import com.sodyo.sdk.ColorCalibrationListener;
+
 import com.sodyo.sdk.ScanType;
 import static com.sodyo.sdk.ScanType.BARCODE;
 import static com.sodyo.sdk.ScanType.QR_CODE;
@@ -81,7 +84,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
     return "RNSodyoSdk";
   }
 
-  private class SodyoCallback implements SodyoScannerCallback, SodyoInitCallback, SodyoFrameCaptureCallback {
+  private class SodyoCallback implements SodyoScannerCallback, SodyoInitCallback, SodyoFrameCaptureCallback, ColorCalibrationListener {
 
       private Callback successCallback;
       private Callback errorCallback;
@@ -139,7 +142,6 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
           sendEvent("EventSodyoError", params);
       }
 
-
       @Override
       public void onResult(ScanResultData scanResultData) {
          Log.i(TAG, "onResult()");
@@ -161,7 +163,7 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
       }
 
       @Override
-      public void onFrameData(byte[] data) {
+      public void onFrameData(byte[] data, boolean origQuality) {
          Log.i(TAG, "onFrameData()" + data);
          WritableMap params = Arguments.createMap();
          String encoded = "data:image/png;base64," + Base64.encodeToString(data, Base64.DEFAULT);
@@ -194,8 +196,6 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
       });
   }
 
-
-
   @ReactMethod
   public void start() {
       Log.i(TAG, "start()");
@@ -224,6 +224,34 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
   public void saveNextFrameCapture() {
     Log.i(TAG, "saveNextFrameCapture()");
     Sodyo.getInstance().saveNextFrameCapture(true);
+  }
+
+  @ReactMethod
+  public void calibrateColors(String controlMarkerCode, String printedMarkerCode) {
+    Log.i(TAG, "calibrateColors()");
+
+    ColorCalibrationData calibrationData = new ColorCalibrationData();
+    calibrationData.setControlMarker(controlMarkerCode);
+    calibrationData.setPrintedMarker(printedMarkerCode);
+    Sodyo.getInstance().setColorCalibrationListener(adjustedData -> {
+       WritableMap params = Arguments.createMap();
+
+       if (adjustedData == null) {
+        params.putString("colorTable", "{}");
+        params.putString("printerMarker", "");
+        params.putString("controlMarker", "");
+        sendEvent("OnColorCalibrationResult", params);
+       } else {
+        String colorTableJsonStr = resultsGson.toJson(adjustedData.getColorTable());
+
+        params.putString("printerMarker", adjustedData.getPrintedMarker());
+        params.putString("controlMarker", adjustedData.getControlMarker());
+        params.putString("colorTable", colorTableJsonStr);
+
+        sendEvent("OnColorCalibrationResult", params);
+       }
+    });
+    Sodyo.getInstance().calibrateColors(calibrationData);
   }
 
   @ReactMethod
