@@ -86,10 +86,13 @@ export default {
 
     const subscription = eventEmitter.addListener('OnColorCalibrationResult', (e) => {
       if (typeof callback === 'function') {
-        const data = typeof e === 'string'
-          ? JSON.parse(e)
-          : e || null;
-        callback(data);
+        if (typeof e === 'string') {
+          const parsed = JSON.parse(e)
+          parsed.colorTable = JSON.parse(parsed.colorTable)
+          callback(parsed);
+        } else {
+          callback(e)
+        }
       }
     });
 

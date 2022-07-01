@@ -171,6 +171,11 @@ public class RNSodyoSdkModule extends ReactContextBaseJavaModule {
 
          sendEvent("OnFrameData", params);
       }
+
+      @Override
+      public void onColorCalibrationResult(ColorCalibrationData calibrationData) {
+         Log.i(TAG, "onColorCalibrationResult()");
+      }
   }
 
   @ReactMethod
