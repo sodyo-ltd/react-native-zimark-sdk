@@ -91,7 +91,10 @@ export default {
           parsed.colorTable = JSON.parse(parsed.colorTable)
           callback(parsed);
         } else {
-          callback(e)
+          callback({
+            ...e,
+            colorTable: JSON.parse(e.colorTable)
+          })
         }
       }
     });
